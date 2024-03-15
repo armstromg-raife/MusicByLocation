@@ -12,6 +12,7 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
+            Text(state.artistNames)
             Text(state.lastKnownLocation)
                 .padding()
             Spacer()

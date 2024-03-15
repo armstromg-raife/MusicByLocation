@@ -9,6 +9,7 @@ import Foundation
 
 class StateController:ObservableObject{
     @Published var lastKnownLocation:String=""
+    @Published var artistNames:String=""
     let locationHandler: LocationHandler=LocationHandler()
     
     func findMusic(){
@@ -32,6 +33,15 @@ class StateController:ObservableObject{
         URLSession.shared.dataTask(with: request){(data, response, error) in
             if let data = data{
                 print(String(decoding: data, as: UTF8.self))
+                if let response=self.parseJson(json: data){
+                    let names = response.results.map{
+                        return $0.name
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.artistNames=names.joined(separator: ", ")
+                    }
+                }
             }
         }.resume()
     }
